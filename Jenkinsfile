@@ -17,7 +17,12 @@ pipeline {
                         script {
                             // Jib을 사용하여 Docker 이미지 빌드 및 푸시
                             withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                                sh "./gradlew jib --image=docker.io/${DOCKER_USERNAME}/project1:${env.BUILD_ID}"
+                                sh '''
+                                    ssh -p 1818 -o StrictHostKeyChecking=no root@127.0.0.1 << EOF
+                                    cd /home/jenkins
+                                    ./gradlew jib --image=docker.io/${DOCKER_USERNAME}/project1:${env.BUILD_ID}
+                                    EOF
+                                '''
                             }
                         }
                     }
