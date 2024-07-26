@@ -5,6 +5,7 @@ pipeline {
         DOCKER_CREDENTIALS = credentials('dockerhub-credentials-id')
         ROCKY_LINUX_CREDENTIALS = credentials('rocky-linux-ssh-credentials-id')
         DOCKER_REGISTRY_URL = 'https://index.docker.io/v1/'
+        FIXED_BUILD_ID = "latest"
     }
 
     stages {
@@ -24,8 +25,8 @@ pipeline {
                                     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $DOCKER_REGISTRY_URL
                                 '''
                                 sh "chmod +x ./gradlew"
-                                sh "./gradlew jib --image=docker.io/${DOCKER_USERNAME}/project1:${env.BUILD_ID}"
-                                sh "docker pull bocoy/project1:${BUILD_ID}"
+                                sh "./gradlew jib --image=docker.io/${DOCKER_USERNAME}/project1:$FIXED_BUILD_ID"
+                                sh "docker pull bocoy/project1:$FIXED_BUILD_ID"
                             }
                         }
                     }
@@ -35,7 +36,7 @@ pipeline {
                 script {
                     sh "docker stop springboot || true"
                     sh "docker rm springboot || true"
-                    sh "docker run -d  --privileged --name springboot -p 8000:8080 bocoy/project1:${BUILD_ID}"
+                    sh "docker run -d  --privileged --name springboot -p 8000:8080 bocoy/project1:$FIXED_BUILD_ID"
                 }
             }
         }
