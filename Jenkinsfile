@@ -30,13 +30,6 @@ pipeline {
                         }
                     }
                 }
-        stage('Deploy to Rocky Linux') {
-            steps {
-                script {
-
-                }
-            }
-        }
     }
     post {
         always {
