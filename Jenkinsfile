@@ -34,12 +34,7 @@ pipeline {
                 script {
                     sshagent(['ROCKY_LINUX_CREDENTIALS']) {
                         sh '''
-                            ssh -p 1818 -o StrictHostKeyChecking=no root@127.0.0.1 << EOF
                             docker pull bocoy/project1:${BUILD_ID}
-                            docker stop springboot || true
-                            docker rm springboot || true
-                            docker run -d  --privileged --name springboot -p 9000:8080 bocoy/project1:${BUILD_ID}
-                            EOF
                         '''
                     }
                 }
