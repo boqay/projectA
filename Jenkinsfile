@@ -30,6 +30,15 @@ pipeline {
                         }
                     }
                 }
+        stage('Deploy to Rocky Linux') {
+            steps {
+                script {
+                    sh "docker stop springboot || true"
+                    sh "docker rm springboot || true"
+                    sh "docker run -d  --privileged --name springboot -p 8000:8080 bocoy/project1:${BUILD_ID}""
+                }
+            }
+        }
     }
     post {
         always {
