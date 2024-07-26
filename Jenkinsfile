@@ -17,6 +17,8 @@ pipeline {
                         script {
                             // Jib을 사용하여 Docker 이미지 빌드 및 푸시
                             withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                print 'id :' + DOCKER_USERNAME
+                                print 'pw :' + DOCKER_PASSWORD
                                 sh "chmod +x ./gradlew"
                                 sh "./gradlew jib --image=docker.io/${DOCKER_USERNAME}/project1:${env.BUILD_ID}"
                             }
