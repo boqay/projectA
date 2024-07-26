@@ -20,7 +20,9 @@ pipeline {
                             withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                                 print 'id :' + DOCKER_USERNAME
                                 print 'pw :' + DOCKER_PASSWORD
-                                sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin $DOCKER_REGISTRY_URL"
+                                sh '''
+                                    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin $DOCKER_REGISTRY_URL
+                                '''
                                 sh "chmod +x ./gradlew"
                                 sh "./gradlew jib --image=docker.io/${DOCKER_USERNAME}/project1:${env.BUILD_ID}"
                             }
