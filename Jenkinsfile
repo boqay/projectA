@@ -25,6 +25,7 @@ pipeline {
                                 '''
                                 sh "chmod +x ./gradlew"
                                 sh "./gradlew jib --image=docker.io/${DOCKER_USERNAME}/project1:${env.BUILD_ID}"
+                                sh docker pull bocoy/project1:${BUILD_ID}
                             }
                         }
                     }
@@ -32,11 +33,7 @@ pipeline {
         stage('Deploy to Rocky Linux') {
             steps {
                 script {
-                    sshagent(['ROCKY_LINUX_CREDENTIALS']) {
-                        sh '''
-                            docker pull bocoy/project1:${BUILD_ID}
-                        '''
-                    }
+
                 }
             }
         }
